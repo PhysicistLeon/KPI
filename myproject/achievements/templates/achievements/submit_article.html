@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Article</title>
+</head>
+<body>
+    <h2>Submit Article</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <!-- Add this within your form where the DOI field is located -->
+        <button type="submit">Submit</button>
+    </form>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to add the Fetch button dynamically
+        function addFetchButton() {
+            const doiField = document.getElementById('id_doi');
+            console.log("button")
+            if (doiField) {
+                // Create the Fetch button
+                const fetchButton = document.createElement('button');
+                fetchButton.type = 'button';
+                fetchButton.id = 'fetch-doi';
+                fetchButton.textContent = 'Fetch';
+
+                // Insert the button after the DOI field
+                doiField.parentNode.insertBefore(fetchButton, doiField.nextSibling);
+
+                // Add event listener to the Fetch button
+                fetchButton.addEventListener('click', function() {
+                    const doi = doiField.value;
+                    if (doi) {
+                        fetch(`/submit_article?doi=${doi}`, {
+                            method: 'GET',
+                            headers: {
+                                "X-Requested-With": "XMLHttpRequest"
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) throw new Error('Data not found');
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Populate form fields with data
+                            document.getElementById('id_title').value = data.title || '';
+                            document.getElementById('id_journal_name').value = data.journal_name || '';
+                            // Populate other fields similarly
+                        })
+                        .catch(error => console.error('Error:', error));
+                    } else {
+                        console.error('Error: DOI is empty');
+                    }
+                });
+            }
+        }
+
+        // Call the function to add the Fetch button
+        addFetchButton();
+    });
+</script>
+</html>
