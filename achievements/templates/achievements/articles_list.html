@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Articles List</title>
-</head>
-<body>
-    <h2>Articles List</h2>
+{% extends "base.html" %}
+
+<div class="container mt-5">
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+    <h2 class="mb-4 text-center"> Articles List</h2>
     {% if articles %}
         <ul>
             {% for article in articles %}
                 <li>
-                    <strong>Title:</strong> {{ article.title }}<br>
-                    <strong>Journal:</strong> {{ article.journal_name }}<br>
-                    <strong>Co-authors:</strong>
+                    <strong>Название:</strong> {{ article.title }}<br>
+                    <strong>Журнал:</strong> {{ article.journal_name }}<br>
+                    <strong>Авторы:</strong>
                     <ul>
                         {% for researcher in article.researchers.all %}
                             <li>{{ researcher.user.username }} ({{ researcher.department }})</li>
@@ -24,5 +25,8 @@
     {% else %}
         <p>No articles found.</p>
     {% endif %}
-</body>
-</html>
+</div>
+</div>
+{% endblock content %}
+
+</div>

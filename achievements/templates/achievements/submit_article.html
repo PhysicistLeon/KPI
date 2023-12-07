@@ -1,17 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Submit Article</title>
-</head>
-<body>
-    <h2>Submit Article</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <!-- Add this within your form where the DOI field is located -->
-        <button type="submit">Submit</button>
-    </form>
-</body>
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+        <h2 class="mb-4 text-center">Submit Your Article</h2>
+        
+        <form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
+            {% csrf_token %}
+            
+            <!-- Display form errors -->
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    Please correct the errors below.
+                </div>
+            {% endif %}
+                    <!-- Iterate over form fields -->
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field|add_class:"form-control" }} <!-- Add Bootstrap form-control class -->
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+
+
+            <button type="submit" class="btn btn-primary">Добавить статью</button>
+        </form>
+        </div>
+    </div>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Function to add the Fetch button dynamically
@@ -23,7 +49,8 @@
                 const fetchButton = document.createElement('button');
                 fetchButton.type = 'button';
                 fetchButton.id = 'fetch-doi';
-                fetchButton.textContent = 'Fetch';
+                fetchButton.className ="btn btn-info";
+                fetchButton.textContent = 'Автозаполнение';
 
                 // Insert the button after the DOI field
                 doiField.parentNode.insertBefore(fetchButton, doiField.nextSibling);
@@ -60,4 +87,5 @@
         addFetchButton();
     });
 </script>
-</html>
+
+{% endblock content %}

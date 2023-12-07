@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-5g_*w0kn(jma1t(^vn!3&fre7a7hr$0nbad@r!$=-da*+mnkb)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["kpi-p2og.onrender.com"]
+ALLOWED_HOSTS = ["kpi-p2og.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "achievements",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
@@ -126,8 +127,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "index"
 
+LANGUAGE_CODE = "ru"  # Set to Russian
+
+USE_I18N = True
+
+LANGUAGES = [
+    ("ru", "Russian"),
+    # Include other languages if necessary
+]
 
 import os
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, "locale"),
+]
+
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
