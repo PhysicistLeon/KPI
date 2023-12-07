@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Profile</h2>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Department:</strong> {{ researcher.department }}</p>
+    <p><strong>Position:</strong> {{ researcher.position }}</p>
+
+    <!-- Display the KPI -->
+    <p><strong>Number of Articles:</strong> {{ num_articles }}</p>
+
+    <form action="{% url 'submit_article' %}" method="get">
+        <div class="form-group">
+        {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Добавить статью</button>
+        </div>
+    </form>
+
+    <a href="{% url 'articles_list' %}">Список статей</a>
+
+{% endblock content %}
